@@ -179,16 +179,13 @@ int list_count_nodes(Node** head) {
 
 
 void list_cleanup(Node** head) {
-    if (head == NULL || *head == NULL) return;
-
-    Node* walker = *head;
-
-    while (walker != NULL) {
-        Node* temp = walker->next;
-        mem_free(walker);
-        walker = temp;
+    Node* current_node = *head;
+    while (current_node) {
+        Node* next = current_node->next;
+        mem_free(current_node);
+        current_node = next;
     }
-
     *head = NULL;
     mem_deinit();
 }
+
