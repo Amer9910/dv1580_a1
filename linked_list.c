@@ -122,29 +122,34 @@ Node* list_search(Node** head, uint16_t data) {
 }
 
 
-void list_display(Node** head) {
+void list_display_range(Node **head, Node *start_node, Node *end_node) {
     if (head == NULL || *head == NULL) {
         printf("[]");
         return;
     }
 
+    Node *current = start_node ? start_node : *head;
+
     printf("[");
 
-    Node* current = *head;
     int first = 1;
-
     while (current != NULL) {
+        // Stop if end_node is specified and we've gone past it
+        if (end_node != NULL && current == end_node->next)
+            break;
+
         if (!first) {
             printf(", ");
         }
-
         printf("%u", current->data);
         first = 0;
+
         current = current->next;
     }
 
     printf("]");
 }
+
 
 void list_display_range(Node** head, Node* start_node, Node* end_node) {
     Node* current = start_node != NULL ? start_node : (head ? *head : NULL);
