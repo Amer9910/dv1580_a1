@@ -122,73 +122,60 @@ Node* list_search(Node** head, uint16_t data) {
 }
 
 
-void list_display_range(Node **head, Node *start_node, Node *end_node) {
+void list_display(Node** head) {
     if (head == NULL || *head == NULL) {
         printf("[]");
         return;
     }
 
-    Node *current = start_node ? start_node : *head;
-
     printf("[");
 
-    int first = 1;
+    Node* current = *head;
     while (current != NULL) {
-        // Stop if end_node is specified and we've gone past it
-        if (end_node != NULL && current == end_node->next)
-            break;
-
-        if (!first) {
+        printf("%u", current->data);
+        if (current->next != NULL) {
             printf(", ");
         }
-        printf("%u", current->data);
-        first = 0;
-
         current = current->next;
     }
 
     printf("]");
 }
-
 
 void list_display_range(Node** head, Node* start_node, Node* end_node) {
-    Node* current = start_node != NULL ? start_node : (head ? *head : NULL);
-    int first = 1;
+    Node* current = (start_node != NULL) ? start_node : (head ? *head : NULL);
 
     printf("[");
+    int is_first = 1;
 
-    while (current != NULL && current != end_node->next) {
-        if (!first) {
+    while (current != NULL) {
+        if (!is_first) {
             printf(", ");
         }
 
         printf("%u", current->data);
-        first = 0;
 
-        if (current == end_node) {
-            current = NULL; // end condition without break
-        } else {
-            current = current->next;
-        }
+        if (current == end_node) break;
+
+        is_first = 0;
+        current = current->next;
     }
 
     printf("]");
 }
 
-
 int list_count_nodes(Node** head) {
+    int count = 0;
+
     if (head == NULL || *head == NULL) return 0;
 
-    int count = 0;
-    Node* current = *head;
-
-    while (current != NULL) {
-        count += 1;
-        current = current->next;
+    for (Node* current = *head; current != NULL; current = current->next) {
+        count++;
     }
 
     return count;
 }
+
 
 
 void list_cleanup(Node** head) {
